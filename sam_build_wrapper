@@ -1,0 +1,4 @@
+#!/bin/sh -ue
+cd $(dirname "$0")
+cfn-include -t -y template.yml > template.yaml
+sam build

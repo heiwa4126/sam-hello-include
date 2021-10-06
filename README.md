@@ -1,15 +1,42 @@
+# sam-hello-include
+
+template.yamlが大きく複雑になりすぎるので、
+CloudFormation用のYAMLプリプロセッサ `cfn-include` を使って
+分割してみたもの。
+
+中身はSAMのサンプルのhello(python3.8)をちょっとだけいじったもの。
+
+
+手順は
+
+1. cfn-includeをインストールしておく (npmで入れてパスを通す)
+2. `template.yaml` のかわりに `template.yml` を編集する
+3. `sam build` のかわりに `./sam_build_warpper` を実行する
+
+これだけ。
+
+このサンプルでは `!include` でローカルのYAMLを読み込んでるだけだけど、
+ネットを介してJSONを取り込んだりもできるらしい。
+
+詳しくは
+[monken/cfn-include: Preprocessor for CloudFormation templates with support for loops and flexible include statements](https://github.com/monken/cfn-include)
+を参照。
+
+
 # sam-hello
+
+以下オリジナルのREADMEのそまま
 
 This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
 
 - hello_world - Code for the application's Lambda function.
 - events - Invocation events that you can use to invoke the function.
-- tests - Unit tests for the application code. 
+- tests - Unit tests for the application code.
 - template.yaml - A template that defines the application's AWS resources.
 
 The application uses several AWS resources, including Lambda functions and an API Gateway API. These resources are defined in the `template.yaml` file in this project. You can update the template to add AWS resources through the same deployment process that updates your application code.
 
-If you prefer to use an integrated development environment (IDE) to build and test your application, you can use the AWS Toolkit.  
+If you prefer to use an integrated development environment (IDE) to build and test your application, you can use the AWS Toolkit.
 The AWS Toolkit is an open source plug-in for popular IDEs that uses the SAM CLI to build and deploy serverless applications on AWS. The AWS Toolkit also adds a simplified step-through debugging experience for Lambda function code. See the following links to get started.
 
 * [CLion](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
