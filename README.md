@@ -22,6 +22,10 @@ CloudFormation用のYAMLプリプロセッサ `cfn-include` を使って
 [monken/cfn-include: Preprocessor for CloudFormation templates with support for loops and flexible include statements](https://github.com/monken/cfn-include)
 を参照。
 
+# TODO
+
+includeした先でもincludeできるか試す。たとえばlog groupの中身はどのlambdaでもだいたい同じのはず。
+
 
 # sam-hello
 
