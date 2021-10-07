@@ -1,30 +1,44 @@
 # sam-hello-include
 
-template.yamlが大きく複雑になりすぎるので、
-CloudFormation用のYAMLプリプロセッサ `cfn-include` を使って
-分割してみたもの。
+SAMのtemplate.yamlが大きく複雑になりすぎるので、
+簡単なプリプロセッサ(python3で書いた30行ほどのコード)で
+処理してみるサンプル。
 
-中身はSAMのサンプルのhello(python3.8)をちょっとだけいじったもの。
+YAMLを分割できる。
 
+中身はSAMのサンプルのhello(python3.8版)を
+ちょっとだけいじったもの。
 
 手順は
 
-1. cfn-includeをインストールしておく (npmで入れてパスを通す)
-2. `template.yaml` のかわりに `template.yml` を編集する
-3. `sam build` のかわりに `./sam_build_warpper` を実行する
+1. `template.yaml` のかわりに `template.yml` を編集する
+2. `sam build` のかわりに `./sam_build_warpper` を実行する(Spring Bootのgradleやmaven方式)
 
 これだけ。
 
-このサンプルでは `!include` でローカルのYAMLを読み込んでるだけだけど、
-ネットを介してJSONを取り込んだりもできるらしい。
 
-詳しくは
+# プリプロセッサ ypp.py
+
+`#!inc <filename> arg1 arg2 ...`
+の部分を対象のfileに置き換える。
+
+引数があれば、対象file中の`$1`をarg1に置き換える。
+
+
+## TODO
+
+- filenameにwhitespaceがあったときの処理がない。まあ実用上問題ない
+- 引数にwhitespaceがあったとき。これは問題
+- 引数のプレースホルダが`$1`なのを`$1!`等にしないとまずい。
+- `#!sh`や`#!txt`もつける。
+- 簡単なコードなんでnodeやGoでも実装してみる。なるべくLambda本体と同じにしたい
+
+
+# メモ
+
+最初は
 [monken/cfn-include: Preprocessor for CloudFormation templates with support for loops and flexible include statements](https://github.com/monken/cfn-include)
-を参照。
-
-# TODO
-
-includeした先でもincludeできるか試す。たとえばlog groupの中身はどのlambdaでもだいたい同じのはず。
+を使ったのだが、機能がマッチしなかったので自前で書いた。
 
 
 # sam-hello

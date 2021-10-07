@@ -12,7 +12,8 @@ Globals:
     Timeout: 3
 
 Resources:
-  !Include resources/hello_lambda.yml
+  #!inc resources/hello_lambda.yml
+  #!inc resources/goodbye_lambda.yml
 
 Outputs:
-  !Include outputs/main.yml
+  #!inc outputs/main.yml

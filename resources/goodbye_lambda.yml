@@ -1,14 +1,13 @@
-HelloWorldFunction:
+GoodbyeWorldFunction:
   Type: AWS::Serverless::Function
   Properties:
-    CodeUri: hello_world/
+    CodeUri: goodbye_world/
     Handler: app.lambda_handler
     Runtime: python3.8
     Events:
-      HelloWorld:
+      GoodbyeWorld:
         Type: Api
         Properties:
-          Path: /hello
+          Path: /goodbye
           Method: get
-
-#!inc resources/logg.yml HelloWorldFunction
+#!inc resources/logg.yml GoodbyeWorldFunction

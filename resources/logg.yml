@@ -1,0 +1,6 @@
+$1LogGroup:
+  Type: AWS::Logs::LogGroup
+  DependsOn: $1
+  Properties:
+    RetentionInDays: 7
+    LogGroupName: !Join ["", ["/aws/lambda/", !Ref $1]]

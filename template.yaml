@@ -1,50 +1,68 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: |
+Transform: AWS::Serverless-2016-10-31
+Description: >
   sam-hello
+
   Sample SAM Template for sam-hello
+
+# More info about Globals:
+# https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
     Timeout: 3
-Outputs:
-  HelloWorldApi:
-    Description: API Gateway endpoint URL for Prod stage for Hello World function
-    Value:
-      'Fn::Sub': >-
-        https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
-  HelloWorldFunction:
-    Description: Hello World Lambda Function ARN
-    Value:
-      'Fn::GetAtt':
-        - HelloWorldFunction
-        - Arn
-  HelloWorldFunctionIamRole:
-    Description: Implicit IAM Role created for Hello World function
-    Value:
-      'Fn::GetAtt':
-        - HelloWorldFunctionRole
-        - Arn
+
 Resources:
   HelloWorldFunction:
+    Type: AWS::Serverless::Function
     Properties:
       CodeUri: hello_world/
-      Events:
-        HelloWorld:
-          Properties:
-            Method: get
-            Path: /hello
-          Type: Api
       Handler: app.lambda_handler
       Runtime: python3.8
-    Type: 'AWS::Serverless::Function'
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: get
+  
   HelloWorldFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
     DependsOn: HelloWorldFunction
     Properties:
-      LogGroupName:
-        'Fn::Join':
-          - ''
-          - - /aws/lambda/
-            - Ref: HelloWorldFunction
       RetentionInDays: 7
-    Type: 'AWS::Logs::LogGroup'
-Transform: 'AWS::Serverless-2016-10-31'
+      LogGroupName: !Join ["", ["/aws/lambda/", !Ref HelloWorldFunction]]
+  GoodbyeWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: goodbye_world/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Events:
+        GoodbyeWorld:
+          Type: Api
+          Properties:
+            Path: /goodbye
+            Method: get
+  GoodbyeWorldFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DependsOn: GoodbyeWorldFunction
+    Properties:
+      RetentionInDays: 7
+      LogGroupName: !Join ["", ["/aws/lambda/", !Ref GoodbyeWorldFunction]]
 
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  HelloWorldApi:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+  GoodbyeWorldApi:
+    Description: "API Gateway endpoint URL for Prod stage for Goodbye World function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/goodbye/"
+  HelloWorldFunction:
+    Description: "Hello World Lambda Function ARN"
+    Value: !GetAtt HelloWorldFunction.Arn
+  HelloWorldFunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt HelloWorldFunctionRole.Arn

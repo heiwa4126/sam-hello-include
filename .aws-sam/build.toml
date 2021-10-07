@@ -8,4 +8,11 @@ source_md5 = ""
 packagetype = "Zip"
 functions = ["HelloWorldFunction"]
 
+[function_build_definitions.b5b39e5f-a3f3-4fc7-84e1-9fe909c25330]
+codeuri = "/home/heiwa/works/aws/sam/sam-hello-include/goodbye_world"
+runtime = "python3.8"
+source_md5 = ""
+packagetype = "Zip"
+functions = ["GoodbyeWorldFunction"]
+
 [layer_build_definitions]
